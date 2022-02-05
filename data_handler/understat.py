@@ -106,10 +106,11 @@ class UnderStat:
         flat_configs = [(l, s, self.dates_config[l][s]["match_" + str(m)]['start_date'],
                             self.dates_config[l][s]["match_" + str(m)]['end_date'], m) for l in self.leagues for s in self.seasons for
                            m in self.matches]
+
         frames = []
 
         for league, season, start, end, match in flat_configs:
-            if isin_future(end):
+            if season == "2021" and match > 20:
                 continue
             try:
                 response = self.make_understat_request(league, season, start, end)
@@ -119,13 +120,17 @@ class UnderStat:
                     df['Season'] = season
                     df['aggregated_to_match'] = match
                     frames.append(df)
-            except:
+            except Exception as e:
+                print(e)
+                print("******")
+                print(f"Error {league}, {season}")
                 continue
 
-            players_df = pd.concat(frames)
-            if save:
-                players_df.to_csv("../data/understat_players_df.csv")
-            return players_df
+        players_df = pd.concat(frames)
+
+        if save:
+            players_df.to_csv("../data/understat_players_df.csv", index=False)
+        return players_df
 
 
     def get_players_data(self, load_exits=True, save=True):
@@ -152,7 +157,7 @@ class UnderStat:
                         print(err)
                         print("Failed to fetch {} {} {}".format(league,season, match))
                         continue
-                    soup = BeautifulSoup(res.content, "lxml")
+                    soup = BeautifulSoup(res.content, "html.parser")
                     scripts = soup.find_all('script')
                     string_with_json_obj = ''
                     for el in scripts:
@@ -204,7 +209,7 @@ class UnderStat:
     def get_teams_data(self, load_exists=True, save=True):
         if load_exists:
             try:
-                teams_df = pd.read_csv("../data/understat_teams_df.csv")
+                teams_df = pd.read_csv("../data/understat_teams_df.csv", index=False)
                 return teams_df
             except Exception as err:
                 print("Failed to load data, Scraping instead..")
