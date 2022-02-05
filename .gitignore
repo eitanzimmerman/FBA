@@ -6,3 +6,7 @@
 # Pycharm generated files #
 ###########################
 .idea/
+
+# Testing Scripts #
+###################
+data_handler/test.py

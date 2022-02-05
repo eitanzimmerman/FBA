@@ -36,7 +36,7 @@ class UnderStat:
             'Ligue_1': 'FR1'
         }
         fetch_configs = {
-            l: {s: {"match_" + str(i): {'start_date': "", "end_date": ""} for i in matches} for s in self.seasons} for l in
+            l: {s: {"match_" + str(i): {'start_date': "", "end_date": ""} for i in self.matches} for s in self.seasons} for l in
             self.leagues}
 
         failure = []
@@ -131,7 +131,7 @@ class UnderStat:
     def get_players_data(self, load_exits=True, save=True):
         if load_exits:
             try:
-                players_df = pd.read_csv(("../data/understat_players_df.csv")
+                players_df = pd.read_csv("../data/understat_players_df.csv")
                 return players_df
             except Exception as err:
                 print("Failed to load data, Scraping instead..")
@@ -204,7 +204,7 @@ class UnderStat:
     def get_teams_data(self, load_exists=True, save=True):
         if load_exists:
             try:
-                teams_df = pd.read_csv(("../data/understat_teams_df.csv")
+                teams_df = pd.read_csv("../data/understat_teams_df.csv")
                 return teams_df
             except Exception as err:
                 print("Failed to load data, Scraping instead..")
