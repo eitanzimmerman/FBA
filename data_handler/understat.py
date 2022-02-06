@@ -200,7 +200,7 @@ class UnderStat:
                     frames.append(final_df)
         teams_dataframe = pd.concat(frames)
         if save:
-            teams_dataframe.to_csv("../data/understat_teams_df.csv")
+            teams_dataframe.to_csv("../data/understat_teams_df.csv", index=False)
 
         return teams_dataframe
 
