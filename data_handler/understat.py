@@ -8,6 +8,7 @@ from tqdm import tqdm
 from data_utils import *
 
 
+
 class UnderStat:
     def __init__(self, load_exists=True, save=True):
         self.seasons = ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021']
